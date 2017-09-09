@@ -17,7 +17,7 @@ import imageio # for direct movie input
 
 from rollingShutter import RollingShutter
 
-MAX_SPEED = 30
+#MAX_SPEED = 30
 IMAGE_QUALITY = 95  # effective range stops at 100
 
 class MainApp(object):
@@ -56,7 +56,7 @@ class MainApp(object):
         # Window frame
         self.frame_main = tk.Frame(master)
         self.frame_main.pack(fill='both', expand=True)
-        
+
         self.frame_footer = tk.Frame(master)
         self.frame_footer.pack(fill='both', anchor='s')
 
@@ -79,25 +79,25 @@ class MainApp(object):
                                      state='disabled',
                                      takefocus=0)
         self.btn_output.pack(fill='both', padx=40, expand=True, pady=10)
-        
+
         self.btn_options = ttk.Button(self.frame_main,
-                                     text='Options',
-                                     command=self.show_options,
-                                     state='normal',
-                                     takefocus=0)
+                                      text='Options',
+                                      command=self.show_options,
+                                      state='normal',
+                                      takefocus=0)
         self.btn_options.pack(fill='both', padx=40, expand=True, pady=10)
 
         self.btn_preview = ttk.Button(self.frame_main,
-                                     text='Show Preview window',
-                                     command=self.show_preview,
-                                     state='disabled',
-                                     takefocus=0)
+                                      text='Show Preview window',
+                                      command=self.show_preview,
+                                      state='disabled',
+                                      takefocus=0)
         self.btn_preview.pack(fill='both', padx=40, expand=True, pady=10)
 
         self.speed_scale = ttk.Scale(self.frame_main,
                                      variable=self.tk_speed_val,
                                      command=self.update_speed,
-                                     from_=1, to=MAX_SPEED,
+                                     from_=1, to=30,
                                      length=310,
                                      takefocus=0)
         self.speed_scale.pack(pady=(8, 0))
@@ -112,17 +112,18 @@ class MainApp(object):
                                             orient='horizontal',
                                             mode='determinate',
                                             variable=self.tk_progress_val,
-                                            maximum = 100)
+                                            maximum=100)
+
         self.progress_bar.pack(fill='x', padx=20, pady=(30, 0))
         self.progress_bar.state(['disabled'])
-        
+
         self.btn_start = ttk.Button(self.frame_main,
                                     text='Give it a go!',
                                     command=self.start,
                                     state='disabled',
                                     takefocus=0)
         self.btn_start.pack(fill='both', padx=140, pady=(8, 0), expand=True)
-        
+
         # Version label
         self.label_version = tk.Label(self.frame_footer,
                                       text='Version ' + self.version,
@@ -134,7 +135,7 @@ class MainApp(object):
         ''' Select the input file
         '''
         file = askopenfile(title='Please select the video to process',
-                           filetypes=[('Video files', ['.mov', '.avi', '.mpg', '.mpeg', '.mp4', '.mkv', '.wmv'])])
+                           filetypes=[('Video files',['.mov', '.avi', '.mpg', '.mpeg', '.mp4', '.mkv', '.wmv'])])
         if not file:
             return None
 
@@ -157,7 +158,7 @@ class MainApp(object):
                                  filetypes=[('PNG File', '*.png'), ('JPEG File', '*.jpg')])
         if not path:
             return None
-        
+
         self.file_output = path
 
         self.speed_scale.state(['!disabled'])
@@ -205,7 +206,7 @@ class MainApp(object):
                                rs.size[1],
                                rs.size[1]-lines_covered)
             choice = askyesno('Proceed?', message)
-                              
+
             if not choice:
                 self.enable_buttons()
                 return None
@@ -238,9 +239,7 @@ class MainApp(object):
         self.speed_scale.state(['disabled'])
 
     def on_closing(self) -> None:
-        if self.rolling_shutter and self.rolling_shutter.running:
-            return None
-
+        if self.rolling_shutter and self.rolling_shutter.running: return None
         self.master.destroy()
 
 class PreviewWindow(object):
@@ -278,13 +277,13 @@ class PreviewWindow(object):
                                      text='Rolling-Shutter-Simulator',
                                      font=('Tahoma', 18))
         self.label_title.pack(pady=(8, 20))
-        
+
         # Preview canvas
-        im = Image.new("RGB",(512,512)) # Black temp image
+        im = Image.new("RGB", (512, 512)) # Black temp image
         self.image = ImageTk.PhotoImage(im)
 
-        self.image_panel = tk.Label(self.frame_main, image = self.image)
-        self.image_panel.pack(side = "bottom", fill = "both", expand = "yes")
+        self.image_panel = tk.Label(self.frame_main, image=self.image)
+        self.image_panel.pack(side="bottom", fill="both", expand="yes")
 
         # Version label
         self.label_version = tk.Label(self.frame_footer,
@@ -292,8 +291,8 @@ class PreviewWindow(object):
                                       font=('Tahoma', 10),
                                       fg='grey60')
         self.label_version.pack(anchor='e', padx=(0, 5))
-    
-    def update_image(self,im):
+
+    def update_image(self, im):
         ''' Update the image on canvas
         '''
         self.image = ImageTk.PhotoImage(im.resize((512,512), Image.ANTIALIAS))
@@ -345,7 +344,7 @@ class OptionsWindow(object):
         self.speed_scale = ttk.Scale(self.frame_main,
                                      variable=self.shutter_speed,
                                      command=self.update_speed,
-                                     from_=1, to=MAX_SPEED,
+                                     from_=1, to=30,
                                      length=310,
                                      takefocus=0)
         self.speed_scale.pack(pady=(8, 0))
