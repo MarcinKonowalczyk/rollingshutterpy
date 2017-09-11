@@ -92,23 +92,6 @@ class MainApp(object):
                                      takefocus=0)
         self.btn_preview.pack(fill='both', padx=40, expand=True, pady=10)
 
-<<<<<<< Updated upstream
-        self.speed_scale = ttk.Scale(self.frame_main,
-                                     variable=self.tk_speed_val,
-                                     command=self.update_speed,
-                                     from_=1, to=MAX_SPEED,
-                                     length=310,
-                                     takefocus=0)
-        self.speed_scale.pack(pady=(8, 0))
-        self.speed_scale.state(['disabled'])
-
-        self.label_speed = ttk.Label(self.frame_main,
-                                     text='Shutter Speed: 1',
-                                     font=('Tahoma', 13))
-        self.label_speed.pack(pady=(0, 8))
-
-=======
->>>>>>> Stashed changes
         self.progress_bar = ttk.Progressbar(self.frame_main,
                                             orient='horizontal',
                                             mode='determinate',
@@ -235,15 +218,8 @@ class MainApp(object):
         self.btn_output['state'] = 'disabled'
         #self.btn_preview['state'] = 'disabled'
 
-<<<<<<< Updated upstream
-    def on_closing(self) -> None:
-        if self.rolling_shutter and self.rolling_shutter.running:
-            return None
-
-=======
     def close_up(self) -> None:
         if self.rolling_shutter and self.rolling_shutter.running: return None
->>>>>>> Stashed changes
         self.master.destroy()
 
 class PreviewWindow(object):
