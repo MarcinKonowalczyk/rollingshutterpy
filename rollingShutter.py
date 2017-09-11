@@ -3,6 +3,7 @@
 from tkinter.messagebox import showinfo
 from threading import Thread
 from PIL import Image, ImageDraw
+import imageDeform as imd
 
 class RollingShutter(object):
     ''' Class for simulating the 'Rolling-Shutter Effect'
@@ -27,7 +28,7 @@ class RollingShutter(object):
         # Is the setup done
         self.setup_done = False
 
-    def setup(self, video_reader, speed: int, path_output: str, quality=95):
+    def setup(self, video_reader, speed: int, path_output: str, deform=False, quality=95):
         ''' Setup self for procesing
         '''
         self.speed = speed
@@ -39,6 +40,7 @@ class RollingShutter(object):
         self.size = self.video_reader._meta['size']
         self.img_output = Image.new('RGB', self.size)
         self.quality = quality
+        self.deform = deform
 
         self.current_row = 0
 
@@ -61,7 +63,7 @@ class RollingShutter(object):
         speed = self.speed
         
         self.running = True
-          
+        previous_line = None
         try:
             for frame in self.video_reader:
                 cr = self.current_row
@@ -69,6 +71,14 @@ class RollingShutter(object):
 
                 new_line = frame.crop((0,cr,w,cr + speed))
                 
+                if self.deform:
+                    
+                    if cr > 0: # if self.current_line > 0
+                        print('deforming')
+                        new_line = imd.fit(previous_line,new_line, maxiter=1)
+                    previous_line = new_line # store current line
+                    
+
                 self.img_output.paste(new_line, (0, cr))
 
                 # Show preview if the preview window is open

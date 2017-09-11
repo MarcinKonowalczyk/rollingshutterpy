@@ -133,7 +133,7 @@ def fit(image_1, image_2, mode='gray', n=0, tol=1, maxiter=10):
         deformed = deform(source,nodes)
         deformed = transform_function(deformed)
         diff = (deformed - target)**2
-        print(nodes)
+        # print(nodes)
         return diff.sum()
 
     # Nodes to deform the image with

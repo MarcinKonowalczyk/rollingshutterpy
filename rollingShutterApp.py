@@ -176,7 +176,7 @@ class MainApp(object):
         speed = opt.shutter_speed.get()
 
         rs = self.rolling_shutter
-        rs.setup(self.vid, speed, self.file_output, IMAGE_QUALITY)
+        rs.setup(self.vid, speed, self.file_output, False, IMAGE_QUALITY)
 
         lines_covered = rs.frame_count * speed
         if lines_covered > rs.size[1]:
